@@ -10,9 +10,10 @@ const ProductModal = ({
   handleAdd,
   closeModal,
 }) => {
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
   const mainImg = selectedImg?.startsWith("http")
     ? selectedImg
-    : `http://localhost:4000/${selectedImg}`;
+    : `${BASE_URL}/${selectedImg}`;
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -80,9 +81,7 @@ const ProductModal = ({
 
           <div className="flex gap-3 pt-4">
             {product.images.map((img, i) => {
-              const src = img.startsWith("http")
-                ? img
-                : `http://localhost:4000/${img}`;
+              const src = img.startsWith("http") ? img : `${BASE_URL}/${img}`;
               return (
                 <img
                   key={i}

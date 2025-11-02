@@ -19,6 +19,7 @@ const FiltersSidebar = ({
   handleAdd,
   navigate,
 }) => {
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
   const toggleCategory = (cat) =>
     setSelectedCategory((prev) =>
       prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
@@ -144,7 +145,7 @@ const FiltersSidebar = ({
                     src={
                       product.images?.[0]?.startsWith("http")
                         ? product.images[0]
-                        : `http://localhost:4000/${product.images[0]}`
+                        : `${BASE_URL}/${product.images[0]}`
                     }
                     alt={product.name}
                     className="h-56 w-full object-contain"

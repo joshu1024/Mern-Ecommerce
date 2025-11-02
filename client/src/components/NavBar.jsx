@@ -260,7 +260,7 @@ const NavBar = () => {
                                       "http"
                                     )
                                     ? product.productId.images[0]
-                                    : `http://localhost:4000/${
+                                    : `${BASE_URL}/${
                                         product.productId.images[0].startsWith(
                                           "/"
                                         )

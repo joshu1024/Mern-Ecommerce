@@ -20,6 +20,7 @@ const Hero = () => {
   const [selectedImg, setSelectedImg] = useState(null);
   const panelRef = useRef(null);
   const [searchParams] = useSearchParams();
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Hero = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/products");
+        const res = await axios.get(`${BASE_URL}/api/products`);
         setFetchedProducts(res.data);
       } catch (err) {
         console.error("Error fetching products:", err);

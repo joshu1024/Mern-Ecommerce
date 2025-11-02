@@ -18,6 +18,7 @@ const Hero = ({ product }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedImg, setSelectedImg] = useState(null);
   const [sortBy, setSortBy] = useState("");
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
   const panelRef = useRef(null);
 
@@ -27,7 +28,7 @@ const Hero = ({ product }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/products");
+        const res = await axios.get(`${BASE_URL}/api/products`);
         setFetchedProducts(res.data);
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -265,7 +266,7 @@ const Hero = ({ product }) => {
                           product.images?.[0]?.startsWith("http")
                             ? product.images[0]
                             : product.images?.[0]
-                            ? `http://localhost:4000/${product.images[0]}`
+                            ? `${BASE_URL}/${product.images[0]}`
                             : "/placeholder.png"
                         }
                         alt={product.name}
@@ -376,7 +377,7 @@ const Hero = ({ product }) => {
                           {selectedProduct.images.map((img, idx) => {
                             const src = img.startsWith("http")
                               ? img
-                              : `http://localhost:4000/${img}`;
+                              : `${BASE_URL}/${img}`;
                             return (
                               <img
                                 key={idx}
