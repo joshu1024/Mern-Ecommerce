@@ -258,7 +258,7 @@ Email: iamAdmin@gmail.com
 Password: 123456
 
 
-> ⚠️ *Demo-only account for portfolio showcase. Do not use these credentials in production environ
+> ⚠️ *Demo-only account for portfolio showcase. Do not use these credentials in production environments.*
 
 ⚙️ Tech Architecture
 
