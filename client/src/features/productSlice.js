@@ -31,8 +31,8 @@ export const deleteProduct = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      return id;
       toast.success("Product deleted successfully");
+      return id;
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.message || "Failed to delete product"
