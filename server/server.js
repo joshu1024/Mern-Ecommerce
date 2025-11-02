@@ -24,8 +24,8 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // for local development
-      "https://mern-ecommerce-26w1.vercel.app", // your Netlify/Vercel URL
+      "http://localhost:5173",
+      "https://mern-ecommerce-26w1-git-main-joes-projects-50075601.vercel.app",
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
