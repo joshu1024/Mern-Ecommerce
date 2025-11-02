@@ -8,14 +8,14 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_URL}/api/user/profile`, {
+        const res = await axios.get(`${BASE_URL}/api/user/profile`, {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });
