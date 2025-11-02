@@ -53,8 +53,8 @@ const __dirname = path.dirname(__filename);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.get("/test", (req, res) => {
-  res.send("Server is alive");
+app.get("/", (req, res) => {
+  res.send("✅ MERN E-Commerce API is running successfully!");
 });
 
 app.use((req, res) => {
