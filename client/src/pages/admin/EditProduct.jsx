@@ -11,11 +11,12 @@ const EditProduct = () => {
     category: "",
   });
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`http://localhost:4000/api/products/${id}`);
+        const res = await axios.get(`${BASE_URL}/api/products/${id}`);
         setProduct(res.data);
       } catch (err) {
         console.error(err);
@@ -27,7 +28,7 @@ const EditProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:4000/api/products/${id}`, product, {
+      await axios.put(`${BASE_URL}/api/products/${id}`, product, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

@@ -12,11 +12,12 @@ import {
 
 const OrdersChart = () => {
   const [data, setData] = useState([]);
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/admin/orders");
+        const res = await axios.get(`${BASE_URL}/api/admin/orders`);
         const orders = res.data;
 
         // Aggregate orders by date
