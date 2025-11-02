@@ -4,23 +4,23 @@ import {
   getProducts,
   getProductById,
   searchProducts,
+  updateProduct,
 } from "../controllers/productController.js";
 import { addToCart } from "../controllers/cartController.js";
 import protectRoute from "../middleware/authMiddleware.js";
 import Product from "../models/Product.js";
-import { updateProduct } from "../controllers/productController.js";
+
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../config/cloudinary.js";
 
 const router = express.Router();
 
-import multer from "multer";
-
-// Configure multer storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // folder to store uploaded images
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "mern-ecommerce",
+    allowed_formats: ["jpg", "jpeg", "png"],
   },
 });
 
@@ -32,11 +32,12 @@ router.get("/", getProducts);
 router.get("/search", searchProducts);
 router.get("/:id", getProductById);
 router.put("/:id", upload.array("images", 5), updateProduct);
+
 router.get("/category/:category", async (req, res) => {
   try {
     const category = req.params.category;
     const products = await Product.find({
-      category: { $regex: new RegExp(category, "i") }, // case-insensitive match
+      category: { $regex: new RegExp(category, "i") },
     });
     res.json(products);
   } catch (error) {
@@ -44,7 +45,6 @@ router.get("/category/:category", async (req, res) => {
   }
 });
 
-// ✅ Get products by brand
 router.get("/brand/:brand", async (req, res) => {
   try {
     const brand = req.params.brand;

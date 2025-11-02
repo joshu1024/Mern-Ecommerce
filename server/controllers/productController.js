@@ -1,13 +1,13 @@
 import Cart from "../models/cart.js";
 import Product from "../models/Product.js";
 
+// ✅ Add product (Cloudinary-ready)
 export const addProduct = async (req, res) => {
   try {
     const { name, oldPrice, newPrice, brand, category } = req.body;
 
-    const images = req.files
-      ? req.files.map((file) => file.path.replace(/\\/g, "/"))
-      : [];
+    // req.files[].path are already Cloudinary URLs
+    const images = req.files ? req.files.map((file) => file.path) : [];
 
     const product = new Product({
       name,
@@ -21,11 +21,12 @@ export const addProduct = async (req, res) => {
     await product.save();
     res.status(201).json(product);
   } catch (error) {
-    console.error(error);
+    console.error("❌ Add product error:", error);
     res.status(500).json({ message: "Failed to add product" });
   }
 };
 
+// ✅ Get all products
 export const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -35,6 +36,7 @@ export const getProducts = async (req, res) => {
   }
 };
 
+// ✅ Get single product by ID
 export const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -45,6 +47,7 @@ export const getProductById = async (req, res) => {
   }
 };
 
+// ✅ Search products
 export const searchProducts = async (req, res) => {
   try {
     const query = req.query.q?.trim();
@@ -71,19 +74,17 @@ export const searchProducts = async (req, res) => {
   }
 };
 
+// ✅ Update product (Cloudinary-ready)
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, oldPrice, newPrice, brand, category, stock } = req.body;
 
-    // Handle new images if uploaded
-    let imagePaths = [];
-    if (req.files && req.files.length > 0) {
-      imagePaths = req.files.map((file) => file.path.replace(/\\/g, "/"));
-    }
-
     const product = await Product.findById(id);
     if (!product) return res.status(404).json({ message: "Product not found" });
+
+    // new image URLs from Cloudinary (if any)
+    const imageUrls = req.files ? req.files.map((file) => file.path) : [];
 
     // update fields
     product.name = name || product.name;
@@ -93,15 +94,14 @@ export const updateProduct = async (req, res) => {
     product.category = category || product.category;
     product.stock = stock || product.stock;
 
-    // only replace images if new ones uploaded
-    if (imagePaths.length > 0) {
-      product.images = imagePaths;
+    if (imageUrls.length > 0) {
+      product.images = imageUrls; // overwrite old images
     }
 
     await product.save();
     res.json({ message: "✅ Product updated successfully", product });
   } catch (error) {
-    console.error("Update error:", error);
+    console.error("❌ Update error:", error);
     res.status(500).json({ message: error.message });
   }
 };

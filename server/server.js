@@ -13,6 +13,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 dotenv.config();
+import fs from "fs";
+
+const uploadDir = path.join(path.resolve(), "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+  console.log("✅ Uploads directory created");
+}
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.use((req, res, next) => {
