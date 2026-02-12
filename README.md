@@ -1,6 +1,6 @@
 🛒 MERN E-Commerce App with Admin Dashboard
 
-A full-stack E-Commerce web application built using the MERN stack (MongoDB, Express.js, React, Node.js) with Redux Toolkit for efficient global state management.
+Production-ready MERN e-commerce platform with JWT authentication, PayPal payments, admin product management, and scalable Redux Toolkit state architecture.
 
 This project delivers a complete online shopping experience — including secure authentication, product management, cart and checkout flow, PayPal payment integration, and an advanced Admin Dashboard for managing users, orders, and products in real-time.
 
