@@ -8,7 +8,11 @@ build/
 .env.local
 .env.development
 .env.production
+.env
 
+/generated/prisma
+
+/generated/prisma
 # ======================================
 # 🧠 Logs and Debug Files
 # ======================================
