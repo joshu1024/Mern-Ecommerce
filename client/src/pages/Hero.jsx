@@ -131,7 +131,7 @@ const Hero = ({ product }) => {
   const handleAdd = () => {
     console.log("Selected Product:", selectedProduct);
     if (!selectedProduct) return;
-    dispatch(addToCartAsync({ productId: selectedProduct._id, quantity: 1 }));
+    dispatch(addToCartAsync({ productId: selectedProduct.id, quantity: 1 }));
     toast.success(`${selectedProduct.name} added to cart`);
   };
   const [searchParams] = useSearchParams();
@@ -254,7 +254,7 @@ const Hero = ({ product }) => {
                 <div className=" grid grid-cols-3 gap-5 flex-grow overflow-hidden  border-t-1 border-gray-200 pt-1">
                   {filteredProducts.map((product) => (
                     <div
-                      key={product._id}
+                      key={product.id}
                       className="relative shadow-md rounded-md px-1 hover:shadow-xl hover:scale-[1.03] transition-transform duration-300 cursor-pointer"
                       onClick={() => {
                         setSelectedProduct(product);

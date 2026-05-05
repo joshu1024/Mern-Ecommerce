@@ -18,7 +18,7 @@ const BrandPage = () => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URL}/api/products/brand/${encodeURIComponent(name)}`
+          `${BASE_URL}/api/products/brand/${encodeURIComponent(name)}`,
         );
         setProducts(res.data);
       } catch (error) {
@@ -34,7 +34,7 @@ const BrandPage = () => {
   if (loading) return <p className="text-center p-10">Loading...</p>;
   const handleAdd = (product) => {
     if (!product) return;
-    dispatch(addToCartAsync({ productId: product._id, quantity: 1 }));
+    dispatch(addToCartAsync({ productId: product.id, quantity: 1 }));
     toast.success(`${product.name} added to cart`);
   };
 
@@ -57,7 +57,7 @@ const BrandPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {products.map((product) => (
             <div
-              key={product._id}
+              key={product.id}
               className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition"
             >
               <img

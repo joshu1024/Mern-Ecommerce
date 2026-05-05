@@ -59,7 +59,7 @@ const Hero = () => {
 
   // Add to cart
   const handleAdd = (product) => {
-    dispatch(addToCartAsync({ productId: product._id, quantity: 1 }));
+    dispatch(addToCartAsync({ productId: product.id, quantity: 1 }));
     toast.success(`${product.name} added to cart`);
   };
 

@@ -9,7 +9,7 @@ async function main() {
 
   for (const product of productsData) {
     const existing = await prisma.product.findUnique({
-      where: { mongoId: product._id?.$oid },
+      where: { mongoId: product.id?.$oid },
     });
 
     if (existing) {
@@ -19,7 +19,7 @@ async function main() {
     await prisma.product.create({
       data: {
         id: undefined, // let Prisma generate a new UUID
-        mongoId: product._id.$oid, // store original Mongo _id
+        mongoId: product.id.$oid, // store original Mongo _id
         name: product.name,
         category: product.category,
         brand: product.brand,

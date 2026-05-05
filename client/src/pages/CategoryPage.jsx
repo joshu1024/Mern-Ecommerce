@@ -31,7 +31,7 @@ const CategoryPage = () => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URL}/api/products/category/${name}`
+          `${BASE_URL}/api/products/category/${name}`,
         );
         setProducts(res.data);
       } catch (error) {
@@ -48,7 +48,7 @@ const CategoryPage = () => {
   // 🔹 Handle Add to Cart
   const handleAdd = (product) => {
     if (!product) return;
-    dispatch(addToCartAsync({ productId: product._id, quantity: 1 }));
+    dispatch(addToCartAsync({ productId: product.id, quantity: 1 }));
     toast.success(`${product.name} added to cart`);
   };
 
@@ -88,7 +88,7 @@ const CategoryPage = () => {
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {products.map((product) => (
             <div
-              key={product._id}
+              key={product.id}
               className="bg-white p-3 sm:p-4 rounded-xl shadow hover:shadow-xl transition-transform transform hover:-translate-y-1 duration-200 flex flex-col justify-between"
             >
               {/* 🖼️ Product Image */}

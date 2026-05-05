@@ -17,7 +17,7 @@ const protectRoute = async (req, res, next) => {
 
     // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+    console.log(decoded);
     // Prisma query instead of Mongoose
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },

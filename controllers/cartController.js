@@ -2,8 +2,10 @@ import prisma from "../config/prisma.js";
 
 export const addToCart = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id;
     const { productId, quantity } = req.body;
+    console.log("📦 addToCart body:", req.body); // ← add this
+    console.log("🆔 productId:", productId); // ← add this
 
     if (!quantity || quantity <= 0) {
       return res

@@ -27,7 +27,7 @@ const ProductDetails = () => {
   if (!product) return <p className="p-5">Loading product...</p>;
   const handleAdd = (product) => {
     if (!product) return;
-    dispatch(addToCartAsync({ productId: product._id, quantity: 1 }));
+    dispatch(addToCartAsync({ productId: product.id, quantity: 1 }));
     toast.success(`${product.name} added to cart`);
   };
 

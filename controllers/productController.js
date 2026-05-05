@@ -5,7 +5,6 @@ export const addProduct = async (req, res) => {
   try {
     const { name, oldPrice, newPrice, brand, category, stock } = req.body;
 
-    // req.files[].path are already Cloudinary URLs
     const images = req.files ? req.files.map((file) => file.path) : [];
 
     const product = await prisma.product.create({
@@ -32,6 +31,7 @@ export const getProducts = async (req, res) => {
     const products = await prisma.product.findMany({
       orderBy: { createdAt: "desc" },
     });
+
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
@@ -40,12 +40,16 @@ export const getProducts = async (req, res) => {
 
 // ✅ Get single product by ID
 export const getProductById = async (req, res) => {
-  const userId = req.params.id;
+  const productId = req.params.id;
+  console.log("produvt id", productId);
   try {
-    const product = await prisma.product.findUnique({
-      where: { id: userId },
+    const product = await prisma.product.findFirst({
+      where: { id: productId },
     });
-    if (!product) return res.status(404).json({ message: "Product not found" });
+    if (!product)
+      return res
+        .status(404)
+        .json({ message: `Product of ${productId} not foundd` });
     res.json(product);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });

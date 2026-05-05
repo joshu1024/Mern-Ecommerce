@@ -133,7 +133,7 @@ const FiltersSidebar = ({
             <div className="grid grid-cols-3 gap-5 flex-grow">
               {filteredProducts.map((product) => (
                 <div
-                  key={product._id}
+                  key={product.id}
                   className="shadow-md rounded-md px-2 py-3 hover:shadow-xl hover:scale-[1.03] transition-transform duration-300 cursor-pointer"
                   onClick={() => {
                     setSelectedProduct(product);

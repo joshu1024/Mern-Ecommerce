@@ -15,13 +15,29 @@ export const fetchProducts = createAsyncThunk(
       return res.data;
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || "Failed to load products"
+        err.response?.data?.message || "Failed to load products",
       );
     }
-  }
+  },
 );
 
-// ✅ Delete a product by ID
+export const getProductById = createAsyncThunk(
+  "products/getProduct",
+  async (id, { rejectWithValue }) => {
+    try {
+      await axios.get(`${BASE_URL}/api/admin/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      return id;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to fetch product",
+      );
+    }
+  },
+);
 export const deleteProduct = createAsyncThunk(
   "products/delete",
   async (id, { rejectWithValue }) => {
@@ -35,10 +51,10 @@ export const deleteProduct = createAsyncThunk(
       return id;
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || "Failed to delete product"
+        err.response?.data?.message || "Failed to delete product",
       );
     }
-  }
+  },
 );
 
 const productSlice = createSlice({
@@ -63,8 +79,6 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-
-      // ✅ Delete product
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.products = state.products.filter((p) => p._id !== action.payload);
       })

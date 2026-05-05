@@ -16,7 +16,7 @@ const ProductGrid = ({
     <div className="grid grid-cols-3 gap-5 mt-4">
       {filteredProducts.map((product) => (
         <div
-          key={product._id}
+          key={product.id}
           className="relative shadow-md rounded-md px-1 hover:shadow-xl hover:scale-[1.03] transition-transform duration-300 cursor-pointer"
           onClick={() => {
             setSelectedProduct(product);
@@ -45,7 +45,7 @@ const ProductGrid = ({
               onClick={(e) => {
                 e.stopPropagation();
                 dispatch(
-                  addToCartAsync({ productId: product._id, quantity: 1 })
+                  addToCartAsync({ productId: product.id, quantity: 1 }),
                 );
                 toast.success(`${product.name} added to cart`);
               }}

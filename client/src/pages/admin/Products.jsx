@@ -52,7 +52,7 @@ const Products = () => {
             {products?.length > 0 ? (
               products.map((product) => (
                 <tr
-                  key={product._id}
+                  key={product.id}
                   className="border-t hover:bg-gray-50 transition-colors"
                 >
                   <td className="p-3">
@@ -85,14 +85,14 @@ const Products = () => {
                   <td className="p-3 flex flex-col sm:flex-row gap-2">
                     <button
                       onClick={() =>
-                        navigate(`/admin/products/edit/${product._id}`)
+                        navigate(`/admin/products/edit/${product.id}`)
                       }
                       className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded text-sm transition-all"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => dispatch(deleteProduct(product._id))}
+                      onClick={() => dispatch(deleteProduct(product.id))}
                       className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition-all"
                     >
                       Delete

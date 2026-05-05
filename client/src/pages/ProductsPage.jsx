@@ -64,9 +64,9 @@ const ProductsPage = () => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {products.map((product) => (
           <div
-            key={product._id}
+            key={product.id}
             className="bg-white shadow-md rounded-lg p-3 hover:shadow-xl transition cursor-pointer"
-            onClick={() => navigate(`/product/${product._id}`)}
+            onClick={() => navigate(`/product/${product.id}`)}
           >
             <img
               src={
