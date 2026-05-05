@@ -100,11 +100,7 @@ const Cart = () => {
               </div>
             ))}
           </div>
-          <div>
-            {items.map((item, index) => {
-              console.log("Cart item:", item);
-            })}
-          </div>
+
           <div className="mt-6 text-center sm:text-right">
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
               Total: ${Number(totalPrice || 0).toFixed(2)}
