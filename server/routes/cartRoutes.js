@@ -4,6 +4,7 @@ import {
   addToCart,
   getCart,
   clearCart,
+  removeCartItem,
 } from "../controllers/cartController.js";
 import protectRoute from "../middleware/authMiddleware.js";
 dotenv.config();
