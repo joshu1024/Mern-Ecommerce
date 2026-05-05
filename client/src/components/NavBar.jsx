@@ -70,7 +70,7 @@ const NavBar = () => {
         try {
           const { data } = await axios.get(
             `${BASE_URL}/api/products/search?q=${searchTerm}`,
-            { signal: controller.signal }
+            { signal: controller.signal },
           );
           setResults(data.slice(0, 5));
         } catch (err) {
@@ -135,8 +135,8 @@ const NavBar = () => {
               <motion.div className="absolute bg-white w-full mt-2 shadow-lg rounded-lg border border-gray-200 z-50 max-h-64 overflow-y-auto">
                 {results.map((item) => (
                   <div
-                    key={item._id}
-                    onClick={() => handleSelectProduct(item._id)}
+                    key={item.id}
+                    onClick={() => handleSelectProduct(item.id)}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
@@ -250,36 +250,36 @@ const NavBar = () => {
                       <ul className="divide-y divide-gray-200">
                         {cartItems.map((product, i) => (
                           <li
-                            key={product.productId?._id || i}
+                            key={product.product?.id || i}
                             className="flex justify-between items-center py-2"
                           >
                             <img
                               src={
-                                product.productId?.images?.length
-                                  ? product.productId.images[0].startsWith(
-                                      "http"
+                                product.product?.images?.length
+                                  ? product.product?.images[0].startsWith(
+                                      "http",
                                     )
-                                    ? product.productId.images[0]
+                                    ? product.product?.images[0]
                                     : `${BASE_URL}/${
-                                        product.productId.images[0].startsWith(
-                                          "/"
+                                        product.product.images[0].startsWith(
+                                          "/",
                                         )
-                                          ? product.productId.images[0].slice(1)
-                                          : product.productId.images[0]
+                                          ? product.product?.images[0].slice(1)
+                                          : product.product?.images[0]
                                       }`
                                   : "/placeholder.jpg"
                               }
-                              alt={product.productId?.name}
+                              alt={product.product?.name}
                               className="w-10 h-10 object-contain"
                             />
 
                             <p className="text-sm truncate w-32">
-                              {product.productId?.name}
+                              {product.product?.name}
                             </p>
                             <p className="text-red-600 font-semibold text-sm">
                               $
-                              {product.productId?.newPrice
-                                ? product.productId.newPrice.toFixed(2)
+                              {product.product?.newPrice
+                                ? product.product.newPrice.toFixed(2)
                                 : "0.00"}
                             </p>
                           </li>

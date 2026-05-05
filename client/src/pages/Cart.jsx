@@ -9,7 +9,7 @@ import {
 import { CircularProgress, Button } from "@mui/material";
 import toast from "react-hot-toast";
 
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
 const getImageUrl = (image) => {
   if (!image) return "/placeholder.jpg";
@@ -21,7 +21,7 @@ const getImageUrl = (image) => {
 const Cart = () => {
   const dispatch = useDispatch();
   const { items, loading, totalPrice, error } = useSelector(
-    (state) => state.cart
+    (state) => state.cart,
   );
   const navigate = useNavigate();
 
@@ -62,21 +62,21 @@ const Cart = () => {
           <div className="space-y-4">
             {items.map((item, index) => (
               <div
-                key={`${item.productId?._id || item._id}-${index}`}
+                key={`${item.product?._id || item._id}-${index}`}
                 className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-200 pb-4"
               >
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 w-full">
                   <img
-                    src={getImageUrl(item.productId?.images?.[0])}
-                    alt={item.productId?.name}
+                    src={getImageUrl(item.product?.images?.[0])}
+                    alt={item.product?.name}
                     className="w-10 h-10 object-contain"
                   />
                   <div className="text-center sm:text-left">
                     <p className="font-semibold text-gray-800">
-                      {item.productId?.name}
+                      {item.product?.name}
                     </p>
                     <p className="text-gray-600 text-sm">
-                      Price: ${item.productId?.newPrice}
+                      Price: ${item.product?.newPrice}
                     </p>
                     <p className="text-gray-600 text-sm">
                       Qty: {item.quantity}
@@ -90,8 +90,8 @@ const Cart = () => {
                     color="error"
                     size="small"
                     onClick={() => {
-                      dispatch(removeFromCart(item.productId?._id));
-                      toast.success(`${item.productId?.name} removed`);
+                      dispatch(removeFromCart(item.product?._id));
+                      toast.success(`${item.product?.name} removed`);
                     }}
                   >
                     Remove

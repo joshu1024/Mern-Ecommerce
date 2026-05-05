@@ -85,7 +85,7 @@ const calculateTotal = (items) => {
   return items.reduce(
     (sum, item) =>
       sum +
-      (item.productId?.newPrice || item.productId?.price || 0) * item.quantity,
+      (item.product?.newPrice || item.product?.price || 0) * item.quantity,
     0,
   );
 };
