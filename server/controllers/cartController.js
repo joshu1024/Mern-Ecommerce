@@ -131,18 +131,15 @@ export const clearCart = async (req, res) => {
 
 // cartController.js
 export const removeCartItem = async (req, res) => {
-  console.log("🗑️ cartItemId:", req.params.cartItemId); // ← add this
-  console.log("👤 userId:", req.user?.userId); // ← add this
+  console.log("🔌 DB URL:", process.env.DATABASE_URL);
   try {
     const { cartItemId } = req.params;
-    const userId = req.user.userId;
+    const userId = req.user?.id;
 
-    // verify the cart item belongs to this user
     const cartItem = await prisma.cartItem.findUnique({
       where: { id: cartItemId },
       include: { cart: true },
     });
-
     if (!cartItem) {
       return res.status(404).json({ message: "Cart item not found" });
     }
@@ -153,7 +150,6 @@ export const removeCartItem = async (req, res) => {
 
     await prisma.cartItem.delete({ where: { id: cartItemId } });
 
-    // return updated cart
     const updatedCart = await prisma.cart.findFirst({
       where: { userId },
       include: {

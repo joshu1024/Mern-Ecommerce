@@ -5,6 +5,7 @@ import {
   fetchCart,
   removeFromCart,
   clearCartAsync,
+  removeFromCartAsync,
 } from "../features/cartSlice.js";
 import { CircularProgress, Button } from "@mui/material";
 import toast from "react-hot-toast";
@@ -90,7 +91,7 @@ const Cart = () => {
                     color="error"
                     size="small"
                     onClick={() => {
-                      dispatch(removeFromCart(item.id));
+                      dispatch(removeFromCartAsync(item.id));
                       toast.success(`${item.product?.name} removed`);
                     }}
                   >
