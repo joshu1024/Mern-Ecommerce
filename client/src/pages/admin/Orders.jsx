@@ -6,7 +6,7 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const BASE_URL = "http://localhost:4000";
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
   useEffect(() => {
     fetchOrders();
@@ -29,7 +29,7 @@ const Orders = () => {
     if (!window.confirm("Are you sure you want to delete this order?")) return;
     try {
       await axios.delete(`${BASE_URL}/api/admin/orders/${id}`);
-      setOrders((prev) => prev.filter((order) => order._id !== id));
+      setOrders((prev) => prev.filter((order) => order.id !== id));
       alert("Order deleted successfully");
     } catch (err) {
       console.error("Failed to delete order:", err);
@@ -44,7 +44,7 @@ const Orders = () => {
       });
       setOrders((prev) =>
         prev.map((order) =>
-          order._id === id ? { ...order, status: newStatus } : order,
+          order.id === id ? { ...order, status: newStatus } : order,
         ),
       );
     } catch (err) {
@@ -90,11 +90,11 @@ const Orders = () => {
             {orders.length > 0 ? (
               orders.map((order) => (
                 <tr
-                  key={order._id}
+                  key={order.id}
                   className="border-t hover:bg-gray-50 transition-colors"
                 >
                   <td className="p-3 text-gray-700 truncate max-w-[120px] sm:max-w-none">
-                    {order._id}
+                    {order.id}
                   </td>
                   <td className="p-3 text-gray-700">
                     {order.user?.name || "Guest"}
@@ -111,7 +111,7 @@ const Orders = () => {
                     <select
                       value={order.status}
                       onChange={(e) =>
-                        handleStatusChange(order._id, e.target.value)
+                        handleStatusChange(order.id, e.target.value)
                       }
                       className="border rounded px-2 py-1 font-medium w-full text-gray-700 focus:ring-2 focus:ring-blue-400 outline-none transition"
                     >
@@ -143,7 +143,7 @@ const Orders = () => {
                   {/* Actions */}
                   <td className="p-3">
                     <button
-                      onClick={() => handleDelete(order._id)}
+                      onClick={() => handleDelete(order.id)}
                       className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition-all"
                     >
                       Delete

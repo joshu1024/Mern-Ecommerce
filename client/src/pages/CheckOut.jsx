@@ -39,7 +39,7 @@ const Checkout = () => {
 
       <ul>
         {items.map((item) => (
-          <li key={item.product?._id || item._id}>
+          <li key={item.product?.id || item.id}>
             {item.product?.images && (
               <img
                 src={item.product.images[0]}

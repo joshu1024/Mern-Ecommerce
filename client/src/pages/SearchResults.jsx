@@ -15,7 +15,7 @@ const SearchResults = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          `http://localhost:4000/api/products/search?q=${query}`
+          `http://localhost:4000/api/products/search?q=${query}`,
         );
         setProducts(data);
       } catch (error) {
@@ -39,8 +39,8 @@ const SearchResults = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {products.map((p) => (
             <Link
-              to={`/product/${p._id}`}
-              key={p._id}
+              to={`/product/${p.id}`}
+              key={p.id}
               className="bg-white p-3 rounded shadow"
             >
               <img

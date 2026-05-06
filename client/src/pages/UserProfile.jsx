@@ -75,10 +75,10 @@ const UserProfile = () => {
               </thead>
               <tbody>
                 {orders.map((order) => (
-                  <React.Fragment key={order._id}>
+                  <React.Fragment key={order.id}>
                     <tr className="border-t hover:bg-gray-50 transition-colors">
                       <td className="p-3 text-gray-700 truncate max-w-[120px] sm:max-w-none">
-                        {order._id}
+                        {order.id}
                       </td>
                       <td className="p-3 text-gray-800 font-medium">
                         ${order.total?.toFixed(2) || "0.00"}
@@ -107,12 +107,12 @@ const UserProfile = () => {
                         <button
                           onClick={() =>
                             setExpandedOrder(
-                              expandedOrder === order._id ? null : order._id,
+                              expandedOrder === order.id ? null : order.id,
                             )
                           }
                           className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded text-sm transition-all"
                         >
-                          {expandedOrder === order._id
+                          {expandedOrder === order.id
                             ? "Hide Details"
                             : "View Details"}
                         </button>
@@ -120,7 +120,7 @@ const UserProfile = () => {
                     </tr>
 
                     {/* Expanded Details */}
-                    {expandedOrder === order._id && (
+                    {expandedOrder === order.id && (
                       <tr>
                         <td colSpan="5" className="bg-gray-50 p-4">
                           {order.items && order.items.length > 0 ? (

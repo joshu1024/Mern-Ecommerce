@@ -103,11 +103,11 @@ const Users = () => {
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user) => (
                 <tr
-                  key={user._id}
+                  key={user.id}
                   className="border-t hover:bg-gray-50 transition-colors"
                 >
                   <td className="p-3 text-gray-600 truncate max-w-[100px] sm:max-w-none">
-                    {user._id}
+                    {user.id}
                   </td>
                   <td className="p-3 text-gray-800">{user.name}</td>
                   <td className="p-3 text-gray-600">{user.email}</td>
@@ -129,7 +129,7 @@ const Users = () => {
                       Toggle Role
                     </button>
                     <button
-                      onClick={() => handleDelete(user._id)}
+                      onClick={() => handleDelete(user.id)}
                       className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition-all"
                     >
                       Delete
