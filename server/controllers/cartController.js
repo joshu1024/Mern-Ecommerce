@@ -10,7 +10,9 @@ export const addToCart = async (req, res) => {
         .status(400)
         .json({ message: "Quantity must be greater than 0" });
     }
-
+    if (product.stock < quantity) {
+      return res.status(400).json({ message: "Insufficient stock" });
+    }
     const product = await prisma.product.findUnique({
       where: { id: productId },
     });
@@ -105,7 +107,6 @@ export const getCart = async (req, res) => {
   }
 };
 
-// --- Clear Cart ---
 export const clearCart = async (req, res) => {
   try {
     const userId = req.user.id;

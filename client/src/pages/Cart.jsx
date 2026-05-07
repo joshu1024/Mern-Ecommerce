@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   fetchCart,
-  removeFromCart,
-  clearCartAsync,
   removeFromCartAsync,
+  clearCartAsync,
 } from "../features/cartSlice.js";
-import { CircularProgress, Button } from "@mui/material";
 import toast from "react-hot-toast";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
@@ -29,13 +27,6 @@ const Cart = () => {
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
-
-  if (loading)
-    return (
-      <div className="flex justify-center items-center h-64">
-        <CircularProgress />
-      </div>
-    );
 
   if (error)
     return (
@@ -86,7 +77,7 @@ const Cart = () => {
                 </div>
 
                 <div className="mt-3 sm:mt-0 flex justify-center sm:justify-end">
-                  <Button
+                  <button
                     variant="outlined"
                     color="error"
                     size="small"
@@ -96,7 +87,7 @@ const Cart = () => {
                     }}
                   >
                     Remove
-                  </Button>
+                  </button>
                 </div>
               </div>
             ))}

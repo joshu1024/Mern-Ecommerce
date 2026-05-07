@@ -14,6 +14,12 @@ const protectRoute = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ error: "Unauthorized: No token provided" });
     }
+    const blacklisted = await prisma.tokenBlacklist.findUnique({
+      where: { token },
+    });
+    if (blacklisted) {
+      return res.status(401).json({ error: "Token has been invalidated" });
+    }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log(decoded);
 

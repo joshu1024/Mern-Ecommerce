@@ -5,7 +5,7 @@ const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useSelector((state) => state.user);
 
   if (loading) return <div>Loading...</div>;
-  if (!isLoggedIn) return <Navigate to="/login" />;
+  if (!isLoggedIn) return <Navigate to="/login" state={{ from: location }} />;
   return children;
 };
 

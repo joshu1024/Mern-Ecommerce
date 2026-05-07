@@ -28,7 +28,6 @@ export const fetchCart = createAsyncThunk(
         withCredentials: true,
       });
       return response.data.cart;
-      console.log("BASE URL:", import.meta.env.VITE_API_BASE_URL);
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -49,7 +48,7 @@ export const clearCartAsync = createAsyncThunk(
 
 export const checkoutCart = createAsyncThunk(
   "cart/checkoutCart",
-  async (_, { rejectWithValue }) => {
+  async ({ items, total }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
         `${BASE_URL}/api/order`,
@@ -83,17 +82,12 @@ export const removeFromCartAsync = createAsyncThunk(
   },
 );
 const initialState = {
-  items: JSON.parse(localStorage.getItem("cartItems")) || [],
+  items: [],
   totalPrice: 0,
   loading: false,
   error: null,
 };
 
-const saveCart = (items) => {
-  localStorage.setItem("cartItems", JSON.stringify(items));
-};
-
-// 💰 Calculate total price
 const calculateTotal = (items) => {
   return items.reduce(
     (sum, item) =>
@@ -106,20 +100,7 @@ const calculateTotal = (items) => {
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {
-    removeFromCart: (state, action) => {
-      state.items = state.items.filter(
-        (item) => item.productId?.id !== action.payload,
-      );
-      state.totalPrice = calculateTotal(state.items);
-      saveCart(state.items);
-    },
-    clearCart: (state) => {
-      state.items = [];
-      state.totalPrice = 0;
-      saveCart(state.items);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(addToCartAsync.pending, (state) => {
@@ -129,27 +110,40 @@ const cartSlice = createSlice({
         state.loading = false;
         state.items = action.payload?.items || [];
         state.totalPrice = calculateTotal(state.items);
-        saveCart(state.items);
       })
       .addCase(addToCartAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(fetchCart.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(fetchCart.fulfilled, (state, action) => {
+        state.loading = false;
         state.items = action.payload?.items || [];
         state.totalPrice = calculateTotal(state.items);
-        saveCart(state.items);
+      })
+      .addCase(fetchCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(clearCartAsync.pending, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
       .addCase(clearCartAsync.fulfilled, (state) => {
+        state.loading = false;
         state.items = [];
         state.totalPrice = 0;
-        saveCart(state.items);
+      })
+      .addCase(clearCartAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
       .addCase(removeFromCartAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.items = action.payload?.items || [];
         state.totalPrice = calculateTotal(state.items);
-        saveCart(state.items);
       })
       .addCase(removeFromCartAsync.rejected, (state, action) => {
         state.loading = false;

@@ -5,14 +5,17 @@ const protectRoute = async (req, res, next) => {
   try {
     const token = req.cookies?.jwt;
 
-    console.log("AUTH HEADER:", req.cookies.jwt);
     if (!token) {
       return res.status(401).json({ error: "Unauthorized: No token provided" });
     }
 
-    // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+    const blacklisted = await prisma.tokenBlacklist.findUnique({
+      where: { token },
+    });
+    if (blacklisted) {
+      return res.status(401).json({ error: "Token has been invalidated" });
+    }
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
       select: {

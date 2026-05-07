@@ -44,15 +44,9 @@ app.use(
     credentials: true,
   }),
 );
-
 /* ---------- Middleware ---------- */
 app.use(express.json());
 app.use(cookieParser());
-/* ---------- Request Logger ---------- */
-app.use((req, res, next) => {
-  console.log("➡️ Incoming:", req.method, req.originalUrl);
-  next();
-});
 
 /* ---------- API Routes ---------- */
 app.use("/api/user", userRoutes);
@@ -67,21 +61,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 /* ---------- Health Route ---------- */
 app.get("/", (req, res) => {
   res.send("✅ MERN E-Commerce API is running successfully!");
-});
-
-/* ---------- Utility Route (Prisma version) ---------- */
-app.get("/cleanup-carts", protectRoute, adminsOnly, async (req, res) => {
-  try {
-    await prisma.cart.deleteMany();
-    res.send("✅ All carts cleared");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("❌ Failed to clear carts");
-  }
 });
 
 /* ---------- 404 Handler ---------- */
