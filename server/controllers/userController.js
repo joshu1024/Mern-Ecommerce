@@ -1,10 +1,14 @@
 import prisma from "../config/prisma.js";
-import bcrypt from "bcryptjs"; // make sure bcrypt is imported
+import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export const registerUser = async (req, res) => {
   try {
     const { userName, email, password } = req.body;
+
+    if (!email || !password || password.length < 8) {
+      return res.status(400).json({ error: "Invalid input" });
+    }
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
@@ -37,10 +41,13 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("🔍 Looking for:", email);
 
+    if (!email || !password || password.length < 8) {
+      return res
+        .status(400)
+        .json({ error: "Email or password missing/incorrect" });
+    }
     const user = await prisma.user.findUnique({ where: { email } });
-    console.log("👤 Result:", user);
     if (!user) return res.status(404).json({ error: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -57,7 +64,6 @@ export const loginUser = async (req, res) => {
         role: user.role,
       },
       success: true,
-      token,
     });
   } catch (error) {
     console.error("❌ Login error:", error);
@@ -66,6 +72,10 @@ export const loginUser = async (req, res) => {
 };
 export const logOutUser = async (req, res) => {
   try {
+    const token = req.cookies?.jwt;
+    if (token) {
+      await prisma.tokenBlacklist.create({ data: { token } });
+    }
     res.cookie("jwt", "", { maxAge: 0 });
     res
       .status(200)

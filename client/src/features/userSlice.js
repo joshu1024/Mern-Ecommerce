@@ -74,7 +74,8 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
-        ((state.loading = true), (state.error = null));
+        state.loading = true;
+        state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -86,7 +87,8 @@ export const userSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(loginUser.pending, (state) => {
-        ((state.loading = true), (state.error = null));
+        state.loading = true;
+        state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -98,7 +100,8 @@ export const userSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(logOutUser.fulfilled, (state) => {
-        ((state.user = null), (state.isLoggedIn = false));
+        state.user = null;
+        state.isLoggedIn = false;
         localStorage.removeItem("user");
       })
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {

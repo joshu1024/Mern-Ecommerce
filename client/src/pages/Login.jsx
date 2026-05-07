@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/userSlice.js";
 import { toast } from "react-hot-toast";
 import { useNavigate, useLocation } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +15,6 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // This remembers where user was trying to go before login
   const from = location.state?.from?.pathname || "/";
 
   const handleChange = (e) => {
@@ -29,8 +27,6 @@ const Login = () => {
       const res = await dispatch(loginUser(formData)).unwrap();
 
       toast.success("Logged in successfully");
-
-      const decoded = jwtDecode(res.token);
 
       if (res.user.role === "admin") {
         navigate("/admin/dashboard", { replace: true });

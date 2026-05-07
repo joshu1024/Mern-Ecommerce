@@ -14,11 +14,9 @@ const protectRoute = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ error: "Unauthorized: No token provided" });
     }
-
-    // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log(decoded);
-    // Prisma query instead of Mongoose
+
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
       select: {

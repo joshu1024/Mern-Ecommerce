@@ -14,7 +14,7 @@ const Checkout = () => {
 
   const initialOptions = {
     "client-id":
-      "AVhcnD3RpwZcOKS-AA8jpS_FuzRgVnj25RtZ-eNtafl8mpNFhpru97SCVE5xJ05wD6PpDIkR1neYNVO6", // 👈 your sandbox client ID
+      "AVhcnD3RpwZcOKS-AA8jpS_FuzRgVnj25RtZ-eNtafl8mpNFhpru97SCVE5xJ05wD6PpDIkR1neYNVO6",
     currency: "USD",
   };
 
@@ -22,7 +22,7 @@ const Checkout = () => {
     const { data } = await axios.post(`${BASE_URL}/api/paypal/create-order`, {
       amount: total,
     });
-    return data.id; // 👈 PayPal needs this
+    return data.id;
   };
 
   const handleApprove = async (data, actions) => {

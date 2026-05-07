@@ -24,15 +24,9 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      if (isLogin) {
-        await dispatch(
-          loginUser({ email: formData.email, password: formData.password })
-        ).unwrap();
-        toast.success("Logged in successfully");
-      } else {
-        await dispatch(registerUser(formData)).unwrap();
-        toast.success("Registered successfully");
-      }
+      await dispatch(registerUser(formData)).unwrap();
+      toast.success("Registered successfully");
+      navigate("/login");
     } catch (err) {
       toast.error(err || "Something went wrong");
     }

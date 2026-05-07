@@ -14,8 +14,9 @@ import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import paypalRoutes from "./routes/paypalRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import protectRoute from "./middleware/authMiddleware.js";
+import adminsOnly from "./middleware/adminMiddleware.js";
 
-console.log("DB URL:", process.env.DATABASE_URL);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -73,7 +74,7 @@ app.get("/", (req, res) => {
 });
 
 /* ---------- Utility Route (Prisma version) ---------- */
-app.get("/cleanup-carts", async (req, res) => {
+app.get("/cleanup-carts", protectRoute, adminsOnly, async (req, res) => {
   try {
     await prisma.cart.deleteMany();
     res.send("✅ All carts cleared");
