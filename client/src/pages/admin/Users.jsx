@@ -61,7 +61,7 @@ const Users = () => {
 
   const filteredUsers = users.filter(
     (u) =>
-      (u.name?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+      (u.userName?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
       (u.email?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false),
   );
 
@@ -109,7 +109,7 @@ const Users = () => {
                   <td className="p-3 text-gray-600 truncate max-w-[100px] sm:max-w-none">
                     {user.id}
                   </td>
-                  <td className="p-3 text-gray-800">{user.name}</td>
+                  <td className="p-3 text-gray-800">{user.userName}</td>
                   <td className="p-3 text-gray-600">{user.email}</td>
                   <td
                     className={`p-3 font-medium ${

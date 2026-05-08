@@ -5,8 +5,8 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
-
 import prisma from "./config/prisma.js";
+import rateLimit from "express-rate-limit";
 
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
@@ -48,6 +48,15 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: "Too many attempts, please try again later" },
+});
+
+// ✅ These lines go BEFORE app.use("/api/user", userRoutes)
+app.use("/api/user/login", authLimiter);
+app.use("/api/user/register", authLimiter);
 /* ---------- API Routes ---------- */
 app.use("/api/user", userRoutes);
 app.use("/api/products", productRoutes);

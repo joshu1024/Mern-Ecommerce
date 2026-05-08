@@ -49,7 +49,7 @@ export const getAllProducts = async (req, res) => {
       prisma.product.count({ where }),
     ]);
 
-    if (!req.query.page && !req.query.limit) return res.json(products);
+    if (!req.query.page && !req.query.limit) return res.json({ products });
 
     res.json({
       products,
@@ -74,23 +74,17 @@ export const deleteProduct = async (req, res) => {
     const product = await prisma.product.delete({
       where: { id: trimmedId },
     });
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
-    console.error("❌ Error deleting product:", error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "Product not found" });
+    }
     res.status(500).json({ message: "Server error while deleting product" });
   }
 };
 
 export const getAllOrders = async (req, res) => {
   try {
-    if (!req.user || req.user.role !== "admin") {
-      return res.status(403).json({ message: "Access denied" });
-    }
-
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 20;
     const skip = (page - 1) * limit;
@@ -144,10 +138,6 @@ export const updateOrderStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    if (!req.user || req.user.role !== "admin") {
-      return res.status(403).json({ message: "Access denied" });
-    }
-
     const allowedStatuses = [
       "Pending",
       "Processing",
@@ -191,8 +181,6 @@ export const deleteOrder = async (req, res) => {
       where: { id },
     });
 
-    if (!order) return res.status(404).json({ message: "Order not found" });
-
     if (req.user.role !== "admin" && order.userId !== req.user.id)
       return res
         .status(403)
@@ -201,7 +189,9 @@ export const deleteOrder = async (req, res) => {
     await prisma.order.delete({ where: { id } });
     res.json({ message: "Order deleted successfully", order });
   } catch (error) {
-    console.error("❌ Error deleting order:", error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "Order not found" });
+    }
     res.status(500).json({ message: "Failed to delete order" });
   }
 };
@@ -232,10 +222,6 @@ export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (req.user.role !== "admin") {
-      return res.status(403).json({ message: "Access denied" });
-    }
-
     if (req.user.id === id) {
       return res
         .status(400)
@@ -265,9 +251,6 @@ export const deleteUser = async (req, res) => {
 
 export const updateUserRole = async (req, res) => {
   try {
-    if (req.user.role !== "admin") {
-      return res.status(403).json({ message: "Access denied" });
-    }
     const { id } = req.params;
     if (req.user.id === id) {
       return res

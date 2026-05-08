@@ -6,7 +6,7 @@ const EditProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({
     name: "",
-    price: "",
+    newPrice: "",
     brand: "",
     category: "",
   });

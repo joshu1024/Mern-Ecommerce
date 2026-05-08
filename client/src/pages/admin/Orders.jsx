@@ -97,7 +97,7 @@ const Orders = () => {
                     {order.id}
                   </td>
                   <td className="p-3 text-gray-700">
-                    {order.user?.name || "Guest"}
+                    {order.user?.userName || "Guest"}
                   </td>
                   <td className="p-3 text-gray-600">
                     {order.user?.email || "N/A"}
