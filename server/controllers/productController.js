@@ -26,7 +26,6 @@ export const addProduct = async (req, res) => {
   }
 };
 
-// ✅ Get all products
 export const getProducts = async (req, res) => {
   try {
     const products = await prisma.product.findMany({
@@ -38,7 +37,6 @@ export const getProducts = async (req, res) => {
   }
 };
 
-// ✅ Get single product by ID
 export const getProductById = async (req, res) => {
   const userId = req.params.id;
   try {
@@ -52,7 +50,6 @@ export const getProductById = async (req, res) => {
   }
 };
 
-// ✅ Search products
 export const searchProducts = async (req, res) => {
   try {
     const query = req.query.q?.trim();
@@ -81,7 +78,6 @@ export const searchProducts = async (req, res) => {
   }
 };
 
-// ✅ Update product (Cloudinary-ready)
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;

@@ -49,8 +49,6 @@ export const getAllProducts = async (req, res) => {
       prisma.product.count({ where }),
     ]);
 
-    if (!req.query.page && !req.query.limit) return res.json({ products });
-
     res.json({
       products,
       currentPage: page,
@@ -228,19 +226,13 @@ export const deleteUser = async (req, res) => {
         .json({ message: "You cannot delete your own account" });
     }
 
-    const userCart = await prisma.cart.findFirst({ where: { userId: id } });
-    if (userCart) {
-      await prisma.cartItem.deleteMany({ where: { cartId: userCart.id } });
-      await prisma.cart.delete({ where: { id: userCart.id } });
-    }
-
-    const userOrders = await prisma.order.findMany({ where: { userId: id } });
-    for (const order of userOrders) {
-      await prisma.orderItem.deleteMany({ where: { orderId: order.id } });
-    }
-    await prisma.order.deleteMany({ where: { userId: id } });
-
-    await prisma.user.delete({ where: { id } });
+    await prisma.$transaction([
+      prisma.cartItem.deleteMany({ where: { cart: { userId: id } } }),
+      prisma.cart.deleteMany({ where: { userId: id } }),
+      prisma.orderItem.deleteMany({ where: { order: { userId: id } } }),
+      prisma.order.deleteMany({ where: { userId: id } }),
+      prisma.user.delete({ where: { id } }),
+    ]);
 
     res.json({ message: "User deleted successfully" });
   } catch (err) {

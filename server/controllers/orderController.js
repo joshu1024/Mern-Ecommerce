@@ -2,14 +2,12 @@ import prisma from "../config/prisma.js";
 
 export const createOrder = async (req, res) => {
   try {
-    const userId = req.user?.id || req.body.user;
+    const userId = req.user?.id;
     const { items } = req.body;
 
     if (!items || items.length === 0) {
       return res.status(400).json({ message: "No order items" });
     }
-
-    // Validate and fetch product data
     const populatedItems = await Promise.all(
       items.map(async (item) => {
         const product = await prisma.product.findUnique({
@@ -49,7 +47,9 @@ export const createOrder = async (req, res) => {
         },
         include: { items: true },
       });
-
+      await tx.cartItem.deleteMany({
+        where: { cart: { userId } },
+      });
       return createdOrder;
     });
 

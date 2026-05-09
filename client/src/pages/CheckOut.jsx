@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useDispatch, useSelector } from "react-redux";
-import { checkoutCart } from "../features/cartSlice";
+import { checkoutCart, clearCartAsync } from "../features/cartSlice";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -11,6 +13,7 @@ const Checkout = () => {
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState("");
   const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+  const navigate = useNavigate();
 
   const initialOptions = {
     "client-id":
@@ -78,16 +81,17 @@ const Checkout = () => {
                   return order.id; // ✅ PayPal expects this
                 });
             }}
-            onApprove={(data, actions) => {
+            onApprove={async (data, actions) => {
               return fetch(
                 `${BASE_URL}/api/paypal/capture-order/${data.orderID}`,
                 { method: "POST" },
               )
                 .then((res) => res.json())
                 .then((details) => {
-                  console.log("🎉 Payment captured:", details);
-                  dispatch(checkoutCart());
-                  alert("Payment successful!");
+                  dispatch(checkoutCart({ items, total: totalPrice }));
+                  dispatch(clearCartAsync()); // ✅ clear cart after payment
+                  toast.success("Payment successful!");
+                  navigate("/profile");
                 });
             }}
             onError={(err) => {

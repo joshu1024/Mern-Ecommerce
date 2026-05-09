@@ -1,18 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
 export const checkoutCart = createAsyncThunk(
   "order/checkoutCart",
   async (orderData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("/api/orders", orderData);
+      const { data } = await axios.post(`${BASE_URL}/api/order`, orderData);
       return data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to checkout"
+        error.response?.data?.message || "Failed to checkout",
       );
     }
-  }
+  },
 );
 
 const orderSlice = createSlice({
